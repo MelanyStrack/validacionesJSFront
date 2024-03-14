@@ -16,8 +16,9 @@ window.onload = function(){
 
 //------DESDE AQUÍ CONTINÚE CON LAS VALIDACIONES DEL FORMULARIO //
 //-------------------DE REGISTRO DE PELÍCULAS------------------//    
-    const between = function(value, min,max){
-        return value >=min && value <= 10
+    const between = function(value, min, max){
+        console.log("value", value);
+        return value >= min && value <= max
     }
 
     const addErrorP = function (elemento) {
@@ -42,45 +43,69 @@ window.onload = function(){
             console.log("childError",childError);
             ulErrores.classList.add("alert-warning")
     }
+
+    const deleteError = function(elemento){
+        const childLi = document.querySelector(`.error${elemento.name}`)
+        const childP = document.querySelector(`.inputError${elemento.name}`)
+        childLi ? ulErrores.removeChild(childLi) : null
+        const divRequired = document.querySelector(`.div-${elemento.name}`);
+        childP ? divRequired.removeChild(childP) : null
+
+        elemento.classList.remove("is-invalid")
+        elemento.classList.add("is-valid")
+        elemento.style.border = "none"
+    }
+
     const validation = function(elemento, e){
         if(elemento.value == ""){
             adErrorLi(elemento)
         }
+        
         if (elemento.value == "" && e.type == "blur"){ 
 
-            console.log("holaaaaa");
             elemento.style.border="2px solid red"
             addErrorP(elemento)
-            
         }
-
-
 
 
         if (elemento.value != "") {
-            const childLi = document.querySelector(`.error${elemento.name}`)
-            const childP = document.querySelector(`.inputError${elemento.name}`)
-            childLi ? ulErrores.removeChild(childLi) : null
-            const divRequired = document.querySelector(`.div-${elemento.name}`);
-            childP ? divRequired.removeChild(childP) : null
-
-            elemento.classList.remove("is-invalid")
-            elemento.classList.add("is-valid")
-            elemento.style.border = "none"
+            deleteError(elemento)
         }
         
-        if (elemento.name == "rating" || elemento.name == "awards ") {
-            if (!between(elemento, 0, 10)) {
-                if (e.type == "blur") {
-                   addErrorP(elemento)
-                   document.querySelector(`.inputError${elemento.name}`).innerText=` ${elemento.name.toUpperCase()} debe tener un valor mínimo de 0 y un valor máximo de 10`
-              console.log("entre al if blur");
-                } else {
-                    console.log("entre al if submit");
-                    addErrorLi(elemento)
+        if (elemento.name == "rating" || elemento.name == "awards"){
+            if (!between(elemento.value, 0, 10)) {
+                    addErrorP(elemento)
+                    document.querySelector(`.inputError${elemento.name}`).innerText=` ${elemento.name.toUpperCase()} debe tener un valor mínimo de 0 y un valor máximo de 10`
+                    console.log("entre al if");
+
+                    adErrorLi(elemento)
                     document.querySelector(`.error${elemento.name}`).innerText=` ${elemento.name.toUpperCase()} debe tener un valor mínimo de 0 y un valor máximo de 10`
+                    const error=document.querySelector(`.error${elemento.name}`)
+                    
+                }else if(elemento.value == ""){
+                    adErrorLi(elemento);
+                    addErrorP(elemento)
+                }else{
+                    deleteError(elemento)
                 }
+        }
+        if (elemento.name == "length") {
+            if (!between(elemento.value, 60, 360)) {
+                addErrorP(elemento)
+                document.querySelector(`.inputError${elemento.name}`).innerText=` ${elemento.name.toUpperCase()} debe tener un valor mínimo de 60 y un valor máximo de 360`
+                console.log("entre al if");
+
+                adErrorLi(elemento)
+                document.querySelector(`.error${elemento.name}`).innerText=` ${elemento.name.toUpperCase()} debe tener un valor mínimo de 60 y un valor máximo de 360`
+                
+            }else if(elemento.value == ""){
+                
+                adErrorLi(elemento)
+                addErrorP(elemento)
+            }else{
+                deleteError(elemento)
             }
+            
         }
     }
 
@@ -101,9 +126,18 @@ window.onload = function(){
         validation(select,e)
 
         if (document.querySelector("ul li")) {
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "Debes ingresar datos válidos",
+                footer: ''
+              });
             e.preventDefault()
+        }else{
+            Swal.fire("La película se guardó satisfactoriamente");
+            
         }
-
+         
 
     })
 
