@@ -1,8 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const moviesController = require('../controllers/moviesController');
-
+//------------- Clase 47 ---------------
 router.get('/movies/list', moviesController.listNew);
+router.get("/movies/createNew", moviesController.createNew)
+router.get('/movies/favorites', moviesController.favorites);
+
+//---------------------------------------
 
 router.get('/movies', moviesController.list);
 router.get('/movies/new', moviesController.new);

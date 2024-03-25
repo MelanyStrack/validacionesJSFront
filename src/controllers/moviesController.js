@@ -21,9 +21,6 @@ const moviesController = {
             })    
  
     },
-    listNew:(req,res)=>{
-        res.render("home.ejs")
-    },
     'detail': (req, res) => {
         db.Movie.findByPk(req.params.id,
             {
@@ -57,6 +54,15 @@ const moviesController = {
             .then(movies => {
                 res.render('recommendedMovies.ejs', {movies});
             });
+    },//---------Clase 47 -----------
+    listNew:(req,res)=>{
+        res.render("home");
+    },
+    createNew:(req,res)=>{
+        res.render("formulario");
+    },
+    favorites:(req,res)=>{
+        res.render("favoritas");
     },
     //Aqui dispongo las rutas para trabajar con el CRUD
     add: function (req, res) {

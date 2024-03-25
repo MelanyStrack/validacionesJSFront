@@ -21,6 +21,7 @@ console.log("peliculas", peliculas);
     let data = peliculas.data;
 
     data.forEach((movie) => {
+
       const card = document.createElement("div");
       card.setAttribute("class", "card");
 
@@ -30,12 +31,16 @@ console.log("peliculas", peliculas);
       const p = document.createElement("p");
       p.textContent = `Rating: ${movie.rating}`;
 
+
       const duracion = document.createElement("p");
       duracion.textContent = `Duración: ${movie.length}`;
 
       container.appendChild(card);
       card.appendChild(h1);
+ 
       card.appendChild(p);
+
+       
       if (movie.genre !== null) {
         const genero = document.createElement("p");
         genero.textContent = `Genero: ${movie.genre.name}`;
@@ -43,5 +48,6 @@ console.log("peliculas", peliculas);
       }
       card.appendChild(duracion);
     });
+
 
 };
